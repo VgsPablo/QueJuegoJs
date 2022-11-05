@@ -24,6 +24,8 @@ const juegos = [
 
 let carrito = []
 
+function verJuegos() {
+
 let bienvenida = prompt("¡Hola! ¿Queres ver nuestra lista de juegos disponibles? Responde SI o NO")
 
 while(bienvenida != "SI" && bienvenida != "NO"){
@@ -77,6 +79,8 @@ while(bienvenida != "NO"){
         })
         break;
     }
+
+}
 
 }
 

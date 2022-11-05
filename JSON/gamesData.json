@@ -1,0 +1,10 @@
+{
+    "juegos": [
+        { "nombre": "Fifa 23", 
+          "precio": 23000 },
+        { "nombre": "The Elder Scrolls V: Skyrim", 
+          "precio": 12000 },
+        { "nombre": "Cyberpunk 2077", 
+          "precio": 3000 }
+    ]
+}
