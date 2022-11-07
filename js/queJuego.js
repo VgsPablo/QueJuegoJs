@@ -1,3 +1,13 @@
+//DOM//
+
+let elementosPorId = document.getElementById("texto1")
+
+elementosPorId.innerHTML = "Bienvenido"
+
+elementosPorId.style.background = "red";
+
+//saludo//
+
 let name = "Pablo Vargas"
 
 function saludar(usuario) {
@@ -21,6 +31,8 @@ const juegos = [
     { nombre: "The Elder Scrolls V: Skyrim", precio: 12000 },
     { nombre: "Cyberpunk 2077", precio: 3000 },
 ]
+
+//carrito//
 
 let carrito = []
 
@@ -86,3 +98,4 @@ while(bienvenida != "NO"){
 
 const total = carrito.reduce((acc, el) => acc + el.precio, 0)
 console.log(`El total a pagar es: ${total}`)
+
