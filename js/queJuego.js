@@ -1,101 +1,302 @@
-//DOM//
-
-let elementosPorId = document.getElementById("texto1")
-
-elementosPorId.innerHTML = "Bienvenido"
-
-elementosPorId.style.background = "red";
-
-//saludo//
-
-let name = "Pablo Vargas"
-
-function saludar(usuario) {
-    console.log("Bienvenid@ 🙋🏻‍♂️", usuario)
-    alert("Bienvenid@ 🙋🏻‍♂️")
-}
-
-function login() {
-    let usuario = prompt("Ingresa tu usuario:").trim()
-
-        if (usuario !== "" && usuario.length >= 3) {
-            saludar(usuario)
-        } else {
-            console.warn("No se reconoce el usuario.")
-            alert("No se reconoce el usuario.")
+const stockProductos = [
+    {
+      id: 1,
+      nombre: "Skyrim",
+      cantidad: 1,
+      desc: "De los mejores juegos de rol que existen",
+      precio: 2000,
+      img: "/imagenes/skyrim.jpg",
+    },
+    {
+      id: 2,
+      nombre: "Assassins Creed: Valhalla",
+      cantidad: 1,
+      desc: "Ultimo juego de la saga Assassins Creed",
+      precio: 2100,
+      img: "/imagenes/assassinscreedvalhalla.jpg",
+    },
+    {
+      id: 3,
+      nombre: "Bless Unleashed",
+      cantidad: 1,
+      desc: "MMORPG de buenos graficos",
+      precio: 2200,
+      img: "/imagenes/blessunleashed.jpg",
+    },
+    {
+      id: 4,
+      nombre: "Fallout IV",
+      cantidad: 1,
+      desc: "RPG post-apocaliptico",
+      precio: 2300,
+      img: "/imagenes/falloutiv.jpg",
+    },
+    {
+      id: 5,
+      nombre: "Fifa 22",
+      cantidad: 1,
+      desc: "El mejor simulador de fútbol",
+      precio: 2400,
+      img: "/imagenes/fifa22.jpg",
+    },
+    {
+      id: 6,
+      nombre: "Fortnite",
+      cantidad: 1,
+      desc: "Battle royale muy entretenido",
+      precio: 2500,
+      img: "/imagenes/fortnite.jpg",
+    },
+    {
+      id: 7,
+      nombre: "Guitar Hero III",
+      cantidad: 1,
+      desc: "Gran juego de música, muy adictivo",
+      precio: 2600,
+      img: "/imagenes/guitarheroiii.jpg",
+    },
+    {
+      id: 8,
+      nombre: "League of Legends",
+      cantidad: 1,
+      desc: "MOBA",
+      precio: 2700,
+      img: "/imagenes/leagueoflegends.jpg",
+    },
+    {
+      id: 9,
+      nombre: "Mass Effect Andromeda",
+      cantidad: 1,
+      desc: "Si te gusta explorar el espacio, este es el juego",
+      precio: 2800,
+      img: "/imagenes/masseffectandromeda.jpg",
+    },
+    {
+      id: 10,
+      nombre: "Minecraft",
+      cantidad: 1,
+      desc: "No hace falta presentación",
+      precio: 2900,
+      img: "/imagenes/minecraft-classic.jpg",
+    },
+  ];
+  let carrito = [];
+  
+  const contenedor = document.querySelector("#contenedor");
+  const carritoContenedor = document.querySelector("#carritoContenedor");
+  const vaciarCarrito = document.querySelector("#vaciarCarrito");
+  const precioTotal = document.querySelector("#precioTotal");
+  const activarFuncion = document.querySelector("#activarFuncion");
+  const procesarCompra = document.querySelector("#procesarCompra");
+  const totalProceso = document.querySelector("#totalProceso");
+  const formulario = document.querySelector('#procesar-pago')
+  
+  if (activarFuncion) {
+    activarFuncion.addEventListener("click", procesarPedido);
+  }
+  
+  document.addEventListener("DOMContentLoaded", () => {
+    carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  
+    mostrarCarrito();
+    document.querySelector("#activarFuncion").click(procesarPedido);
+  });
+  if(formulario){
+    formulario.addEventListener('submit', enviarCompra)
+  }
+  
+  
+  if (vaciarCarrito) {
+    vaciarCarrito.addEventListener("click", () => {
+      carrito.length = [];
+      mostrarCarrito();
+    });
+  }
+  
+  if (procesarCompra) {
+    procesarCompra.addEventListener("click", () => {
+      if (carrito.length === 0) {
+        Swal.fire({
+          title: "¡Tu carrito está vacio!",
+          text: "Compra algo para continuar con la compra",
+          icon: "error",
+          confirmButtonText: "Aceptar",
+        });
+      } else {
+        location.href = "compra.html";
+      }
+    });
+  }
+  
+  stockProductos.forEach((prod) => {
+    const { id, nombre, precio, desc, img, cantidad } = prod;
+    if (contenedor) {
+      contenedor.innerHTML += `
+      <div class="card mt-3" style="width: 18rem;">
+      <img class="card-img-top mt-2" src="${img}" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">${nombre}</h5>
+        <p class="card-text">Precio: ${precio}</p>
+        <p class="card-text">Info: ${desc}</p>
+        <p class="card-text">Cantidad: ${cantidad}</p>
+        <button class="btn btn-primary" onclick="agregarProducto(${id})">Comprar Producto</button>
+      </div>
+    </div>
+      `;
+    }
+  });
+  
+  const agregarProducto = (id) => {
+    const existe = carrito.some(prod => prod.id === id)
+  
+    if(existe){
+      const prod = carrito.map(prod => {
+        if(prod.id === id){
+          prod.cantidad++
         }
-}
-
-const juegos = [
-    { nombre: "Fifa 23", precio: 23000 },
-    { nombre: "The Elder Scrolls V: Skyrim", precio: 12000 },
-    { nombre: "Cyberpunk 2077", precio: 3000 },
-]
-
-//carrito//
-
-let carrito = []
-
-function verJuegos() {
-
-let bienvenida = prompt("¡Hola! ¿Queres ver nuestra lista de juegos disponibles? Responde SI o NO")
-
-while(bienvenida != "SI" && bienvenida != "NO"){
-    alert("Respuesta invalida. Por favor responder SI o NO")
-    bienvenida = prompt("¡Hola! ¿Queres ver nuestra lista de juegos disponibles? Responde SI o NO")
-}
-
-if(bienvenida == "SI"){
-    let listaJuegos = juegos.map(
-        (juego) => juego.nombre + " " + "$" + juego.precio
+      })
+    } else {
+      const item = stockProductos.find((prod) => prod.id === id)
+      carrito.push(item)
+    }
+    mostrarCarrito()
+  
+  };
+  
+  const mostrarCarrito = () => {
+    const modalBody = document.querySelector(".modal .modal-body");
+    if (modalBody) {
+      modalBody.innerHTML = "";
+      carrito.forEach((prod) => {
+        const { id, nombre, precio, desc, img, cantidad } = prod;
+        console.log(modalBody);
+        modalBody.innerHTML += `
+        <div class="modal-contenedor">
+          <div>
+          <img class="img-fluid img-carrito" src="${img}"/>
+          </div>
+          <div>
+          <p>Producto: ${nombre}</p>
+        <p>Precio: ${precio}</p>
+        <p>Cantidad :${cantidad}</p>
+        <button class="btn btn-danger"  onclick="eliminarProducto(${id})">Eliminar producto</button>
+          </div>
+        </div>
+        
+    
+        `;
+      });
+    }
+  
+    if (carrito.length === 0) {
+      console.log("Nada");
+      modalBody.innerHTML = `
+      <p class="text-center text-primary parrafo">¡Aun no agregaste nada!</p>
+      `;
+    } else {
+      console.log("Algo");
+    }
+    carritoContenedor.textContent = carrito.length;
+  
+    if (precioTotal) {
+      precioTotal.innerText = carrito.reduce(
+        (acc, prod) => acc + prod.cantidad * prod.precio,
+        0
+      );
+    }
+  
+    guardarStorage();
+  };
+  
+  function guardarStorage() {
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+  }
+  
+  function eliminarProducto(id) {
+    const juegoId = id;
+    carrito = carrito.filter((juego) => juego.id !== juegoId);
+    mostrarCarrito();
+  }
+  function procesarPedido() {
+    carrito.forEach((prod) => {
+      const listaCompra = document.querySelector("#lista-compra tbody");
+      const { id, nombre, precio, img, cantidad } = prod;
+      if (listaCompra) {
+        const row = document.createElement("tr");
+        row.innerHTML += `
+                <td>
+                <img class="img-fluid img-carrito" src="${img}"/>
+                </td>
+                <td>${nombre}</td>
+              <td>${precio}</td>
+              <td>${cantidad}</td>
+              <td>${precio * cantidad}</td>
+              `;
+        listaCompra.appendChild(row);
+      }
+    });
+    totalProceso.innerText = carrito.reduce(
+      (acc, prod) => acc + prod.cantidad * prod.precio,
+      0
     );
-    alert(listaJuegos.join(" \n "))
-}
-
-else if(bienvenida == "NO"){
-    alert("¡Gracias por visitarnos!")
-}
-
-while(bienvenida != "NO"){
-    let juego = prompt("Agrega un juego a tu carrito")
-    let precio = 0
-
-    if(juego == "Fifa 23" || juego == "The Elder Scrolls V: Skyrim" || juego == "Cyberpunk 2077" ){
-        switch (juego){
-            case "Fifa 23":
-                precio = 23000;
-                break;
-            case "The Elder Scrolls V: Skyrim":
-                precio = 12000;
-                break;    
-            case "Cyberpunk 2077":
-                precio = 3000;
-                break;
-            default:
-                break;    
-        }
-
-        carrito.push(juego, precio)
-        console.log(carrito)
-    }
-
-    else {
-        alert("No encontramos el juego.")
-    }
-
-    bienvenida = prompt("¿Queres seguir comprando?")
-    while(bienvenida === "NO"){
-        alert("¡Gracias por tu compra!")
-        carrito.forEach((carritoFinal) =>{
-            console.log(`juego: ${carritoFinal.juego}, total ${carritoFinal.precio}`)
-        })
-        break;
-    }
-
-}
-
-}
-
-const total = carrito.reduce((acc, el) => acc + el.precio, 0)
-console.log(`El total a pagar es: ${total}`)
+  }
+  
+   function enviarCompra(e){
+     e.preventDefault()
+     const cliente = document.querySelector('#cliente').value
+     const email = document.querySelector('#correo').value
+  
+     if(email === '' || cliente == ''){
+       Swal.fire({
+         title: "Por favor, completa con tu nombre y mail",
+         text: "Rellena el formulario",
+         icon: "error",
+         confirmButtonText: "Aceptar",
+     })
+   } else {
+  
+    const btn = document.getElementById('button');
+  
+  // document.getElementById('procesar-pago')
+  //  .addEventListener('submit', function(event) {
+  //    event.preventDefault();
+  
+     btn.value = 'Enviando...';
+  
+     const serviceID = 'default_service';
+     const templateID = 'template_qxwi0jn';
+  
+     emailjs.sendForm(serviceID, templateID, this)
+      .then(() => {
+        btn.value = 'Finalizar compra';
+        alert('Correo enviado!');
+      }, (err) => {
+        btn.value = 'Finalizar compra';
+        alert(JSON.stringify(err));
+      });
+      
+     const spinner = document.querySelector('#spinner')
+     spinner.classList.add('d-flex')
+     spinner.classList.remove('d-none')
+  
+     setTimeout(() => {
+       spinner.classList.remove('d-flex')
+       spinner.classList.add('d-none')
+       formulario.reset()
+  
+       const alertExito = document.createElement('p')
+       alertExito.classList.add('alert', 'alerta', 'd-block', 'text-center', 'col-12', 'mt-2', 'alert-success')
+       alertExito.textContent = 'Compra realizada correctamente'
+       formulario.appendChild(alertExito)
+  
+       setTimeout(() => {
+         alertExito.remove()
+       }, 3000)
+  
+  
+     }, 3000)
+   }
+   localStorage.clear()
+  
+   }
 

@@ -1,25 +1,10 @@
 * {
-    margin: 20px;
+    margin: 0;
+    padding: 0;
 }
 
 body{
-    background-color: rgb(35, 35, 35);
+    background-color: rgb(210, 210, 210);
+
 }
 
-h1 {
-    font-size: 50px;
-    font-weight: 400;
-    color: white;
-}
-
-h2{
-    font-size:25px;
-    font-weight: 400;
-    color: white;
-}
-
-p{
-    font-size: 15px;
-    font-weight: 200;
-    color: white;
-}
